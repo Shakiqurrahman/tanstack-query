@@ -5,6 +5,7 @@ import "./index.css";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import ProductDetails from "./components/ProductDetails.jsx";
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -13,8 +14,8 @@ const router = createBrowserRouter([
     element: <App />,
   },
   {
-    path: "/product-details:id",
-    element: <h1>About</h1>,
+    path: "/product-details/:id",
+    element: <ProductDetails />,
   }
 ])
 ReactDOM.createRoot(document.getElementById("root")).render(
