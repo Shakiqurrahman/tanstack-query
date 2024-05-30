@@ -1,9 +1,11 @@
 import React from 'react';
+import Products from './components/Products';
 
 const App = () => {
   return (
-    <div>
-      <h1 className='text-center mt-8 text-4xl font-bold'>Tanstack <span className='text-[#f49510]'>Query</span></h1>
+    <div className='container mx-auto p-4'>
+      <h1 className='text-center my-8 text-4xl font-bold'>Dummy <span className='text-[#60dba8]'>Products</span></h1>
+      <Products />
     </div>
   );
 };
