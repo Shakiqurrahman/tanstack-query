@@ -1,40 +1,71 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { HashLoader } from "react-spinners";
 
 const Products = () => {
+  const [searchParams, setSearchParams] = useSearchParams({ skip: 0, limit: 6 });
+
+  const skip = parseInt(searchParams.get('skip') || 0);
+  const limit = parseInt(searchParams.get('limit') || 6);
+
   const navigate = useNavigate();
   // const queryClient = useQueryClient();
 
-  const getProducts = async () => {
-    try {
-      const response = await axios.get("https://dummyjson.com/products");
+  const { data: categoryData } = useQuery({
+    queryKey: ["categories"],
+    queryFn: async () => {
+      const response = await axios.get(
+        "https://dummyjson.com/products/categories"
+      );
       return response.data;
-    } catch (error) {
-      if (!error.response) {
-        throw new Error(
-          "Network Error: Please check your internet connection."
-        );
-      }
-      throw error;
-    }
-  };
+    },
+  });
 
   const { isLoading, isError, error, data } = useQuery({
-    queryKey: ["products"],
-    queryFn: getProducts,
+    queryKey: ["products", limit, skip],
+    queryFn: async () => {
+      const response = await axios.get(
+        `https://dummyjson.com/products?limit=${limit}&skip=${skip}`
+      );
+      return response.data;
+    },
+    placeholderData:keepPreviousData,
     retry: false,
     staleTime: 10 * 1000,
   });
 
-  console.log(data);
+  const handleMove = (limitCount) => {
+
+    setSearchParams((prev) => {
+      prev.set('skip', Math.max(skip + limitCount, 0))
+      return prev;
+    })
+  };
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold ">All Products</h1>
-
+    <div className="mb-20">
+      <div>
+        <div className="relative mt-2 rounded-md flex items-center gap-8 mb-4">
+          <input
+            onChange={() => {}}
+            type="text"
+            name="price"
+            id="price"
+            className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            placeholder="IPhone"
+          />
+          <select className="border p-2" onChange={() => {}}>
+            <option>Select category</option>
+            {categoryData?.map((category, idx) => (
+              <option key={idx} value={category.name}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
       {isLoading && (
         <div className="flex justify-center items-center h-[75vh]">
           <HashLoader className="mx-auto" size={120} />
@@ -68,6 +99,24 @@ const Products = () => {
           ))}
         </div>
       )}
+      <div className="flex gap-4 mt-12 justify-center">
+        <button
+          className="bg-purple-500 text-xl px-4 py-2 text-white rounded"
+          onClick={() => {
+            handleMove(-limit);
+          }}
+        >
+          Prev
+        </button>
+        <button
+          className="bg-purple-500 text-xl px-4 py-2 text-white rounded"
+          onClick={() => {
+            handleMove(limit);
+          }}
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 };
