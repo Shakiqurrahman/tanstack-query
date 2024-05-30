@@ -16,14 +16,14 @@ const router = createBrowserRouter([
   {
     path: "/product-details/:id",
     element: <ProductDetails />,
-  }
-])
+  },
+]);
 ReactDOM.createRoot(document.getElementById("root")).render(
   // <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router}>
+  <QueryClientProvider client={queryClient}>
+    <RouterProvider router={router}>
       <App />
-      </RouterProvider>
-    </QueryClientProvider>
+    </RouterProvider>
+  </QueryClientProvider>
   // </React.StrictMode>
 );

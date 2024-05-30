@@ -19,7 +19,6 @@ const ProductDetails = () => {
     queryKey: ["product"],
     queryFn: getProduct,
     retry:false,
-    
   });
 
 
@@ -42,19 +41,23 @@ const ProductDetails = () => {
             {errorMessage} 
           </h1>
         )}
-        {data && (
-          <div className="flex">
-            <div className="w-full">
-              <img src={data.thumbnail} alt={data.title} />
-            </div>
-            <div className="w-full">
-              <h2 className="text-3xl font-semibold mb-2">Name :{data.title}</h2>
-              <h4 className="text-sm">Brand : {data.brand}</h4>
-              <p className="text-xl text-[#60dba8]">Price : {data.price}$</p>
-              <p>Description : {data.description}</p>
-            </div>
+         {data && (
+        <div className=" mt-20 flex flex-col md:flex-row gap-6 items-center">
+          <div className="w-full">
+            <img
+              src={data.thumbnail}
+              alt={data.title}
+              className="w-[60%] h-auto object-cover rounded-lg shadow-md"
+            />
           </div>
-        )}
+          <div className="w-full">
+            <h2 className="text-3xl font-semibold mb-2">Name: {data.title}</h2>
+            <h4 className="text-lg mb-2">Brand: {data.brand}</h4>
+            <p className="text-xl text-[#60dba8] mb-2">Price: {data.price}$</p>
+            <p className="text-base">Description: {data.description}</p>
+          </div>
+        </div>
+      )}
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ import { HashLoader } from "react-spinners";
 
 const Products = () => {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
   const getProducts = async () => {
     try {
