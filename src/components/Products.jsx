@@ -83,15 +83,18 @@ const Products = () => {
             <div
               onClick={() => navigate(`product-details/${product.id}`)}
               key={product.id}
-              className="bg-[#F5F6F4] p-10 rounded-md"
+              className="bg-[#F5F6F4] p-10 rounded-md flex flex-col justify-center"
             >
               <img src={product?.thumbnail} alt={`${product.title} image`} />
               <h3 className="text-2xl  font-semibold text-center text-[#817df2]">
                 {product.title}
               </h3>
-              <p className="text-center text-sm my-1">
+             {product.brand ? <p className="text-center text-sm my-1">
                 Brand : {product.brand}
+              </p> : <p className="text-center text-sm my-1">
+                Category : {product.category}
               </p>
+              }
               <p className="text-center text-3xl mt-2 font-semibold text-[#60dba8]">
                 {product.price}$
               </p>
